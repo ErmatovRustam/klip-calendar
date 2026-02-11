@@ -60,6 +60,13 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  const { seedDatabase } = await import("./seed");
+  try {
+    await seedDatabase();
+  } catch (e) {
+    console.log("Seed check completed");
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, next: NextFunction) => {
