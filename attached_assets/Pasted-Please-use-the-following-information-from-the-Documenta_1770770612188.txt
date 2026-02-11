@@ -1,0 +1,40 @@
+Please use the following information from the "Documentation for Booking System Implementation" guide to generate the requirements, architecture, and technology stack for a new web calendar application, similar to Google Calendar, for barbershop owners. This application will serve as a dashboard to display new bookings and external bookings from other platforms.Prompt for Web Calendar App Development
+
+Goal: Create a comprehensive development plan and architectural outline for a web-based calendar and management dashboard for barbershop owners. The application must function like a Google Calendar interface, displaying both direct bookings and external calendar events.
+
+Context & Requirements based on the provided documentation:
+Architecture & Components:
+Backend: Supabase (PostgreSQL Database, Edge Functions (API endpoints), Authentication, Real-time subscriptions).
+Frontend (Your App): Merchant App (Replit App).
+External Integration: ElevenLabs Voice Agent (for voice bookings).
+Calendar Sync Mechanism: A cron job is required for calendar sync, utilizing the sync-calendars Edge Function and the calendar_syncs table.
+Core Merchant App Features (Specific to Calendar Dashboard):
+Calendar View: A dashboard to display staff availability and bookings.
+Working Hours Configuration: Ability to configure staff working hours, which are stored in the working_hours table.
+Staff Management: CRUD operations for staff members (barbers).
+Services Management: CRUD operations for services.
+API Key Generation: For the Voice Agent to connect.
+Calendar Sync Settings: Configure external calendar synchronization (e.g., iCal, Vagaro, Booksy, Google Calendar).
+Data Models (Relevant Tables):
+businesses: Stores business info, including the critical business_type ('barbershop' or 'nail_salon').
+staff_members: Stores staff details (barbers).
+services: Stores service details, including duration and price.
+bookings: Stores confirmed appointments, including start_time, end_time, staff_id, service_id, and booking_source (e.g., 'consumer_app' or 'voice_agent').
+blocked_times: Stores time blocks imported from external calendars.
+calendar_syncs: Stores external calendar URLs and sync status for each staff member.
+Backend Logic (Edge Functions):
+/get-availability: Used by the Consumer App (and Voice Agent) to check available slots by date, service, and optionally staff.
+/create-booking: Handles creating a new booking.
+/agent-api: Handles all voice agent requests (config, services, availability, booking).
+/sync-calendars: Called by a cron job to process ical_urls in calendar_syncs and populate the blocked_times table.
+Barbershop-Specific Terminology:
+Staff Title: Barbers.
+Example Services: Haircut, Fade, Beard Trim, Shave.
+Voice Agent Tone: Casual, friendly.
+Staff Roles (Merchant App): Barber, Master Barber, Apprentice.
+Service Categories (Merchant App): Haircut, Shave & Beard, Color, Styling, Treatment, Combo Package.
+Default Services: Classic Haircut, Fade, Buzz Cut, Kids Haircut, Beard Trim, Hot Towel Shave, Haircut & Beard Combo, Hair Color.
+Your Task: Implement the features listed in Requirement 2 using the specified Supabase data models and Edge Functions to create the Google Calendar-like dashboard. Pay special attention to integrating the display of new appointments from the bookings table and blocked times from the blocked_times table, which come from external calendar syncs. Use the barbershop-specific terminology for all UI elements.
+
+Sources:
+Documentation for Booking System Implementation .pdf
