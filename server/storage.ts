@@ -128,7 +128,7 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createBooking(data: InsertBooking): Promise<Booking> {
-    const confNum = "BK-" + String(Math.floor(Math.random() * 10000)).padStart(4, "0");
+    const confNum = "BK-" + String(Math.floor(Math.random() * 900000) + 100000);
     const [result] = await db.insert(bookings).values({ ...data, confirmationNumber: confNum }).returning();
     return result;
   }

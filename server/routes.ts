@@ -188,10 +188,12 @@ export async function registerRoutes(
 
   app.patch("/api/bookings/:id", async (req, res) => {
     try {
-      const data = { ...req.body };
-      if (data.startTime) data.startTime = new Date(data.startTime);
-      if (data.endTime) data.endTime = new Date(data.endTime);
-      const updated = await storage.updateBooking(req.params.id, data);
+      const body = { ...req.body };
+      if (body.startTime) body.startTime = new Date(body.startTime);
+      if (body.endTime) body.endTime = new Date(body.endTime);
+      const partial = insertBookingSchema.partial().safeParse(body);
+      if (!partial.success) return res.status(400).json({ message: partial.error.message });
+      const updated = await storage.updateBooking(req.params.id, partial.data);
       if (!updated) return res.status(404).json({ message: "Not found" });
       res.json(updated);
     } catch (e: any) {

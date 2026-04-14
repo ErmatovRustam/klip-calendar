@@ -87,13 +87,16 @@ export default function CalendarView() {
   const getStaffName = (staffId: string | null) => {
     if (!staffId || !staff) return "Unassigned";
     const member = staff.find((s) => s.id === staffId);
-    return member?.displayName || `${member?.firstName} ${member?.lastName}` || "Unknown";
+    if (!member) return "Unknown";
+    if (member.displayName) return member.displayName;
+    const full = [member.firstName, member.lastName].filter(Boolean).join(" ");
+    return full || "Unknown";
   };
 
   const getEventPosition = (startTime: Date) => {
     const dayStart = setMinutes(setHours(startOfDay(startTime), START_HOUR), 0);
     const minutesFromStart = differenceInMinutes(startTime, dayStart);
-    return (minutesFromStart / 60) * HOUR_HEIGHT;
+    return Math.max(0, (minutesFromStart / 60) * HOUR_HEIGHT);
   };
 
   const getEventHeight = (durationMinutes: number) => {
